@@ -1,7 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
-
 export default function Hero() {
   return (
     <section style={{
@@ -22,7 +21,6 @@ export default function Hero() {
       >
         UV-C Athletic Sanitization
       </motion.p>
-
       <motion.h1
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -40,7 +38,6 @@ export default function Hero() {
         Elite gear.<br />
         <em style={{ fontStyle: "italic", color: "var(--muted)" }}>Sanitized.</em>
       </motion.h1>
-
       <motion.p
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -49,12 +46,11 @@ export default function Hero() {
       >
         Advanced UV-C technology engineered for athletes. Eliminate 99.9% of bacteria from your chinstrap in under ten minutes — no chemicals, no residue, no compromise.
       </motion.p>
-
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.3 }}
-        style={{ display: "flex", gap: 16, alignItems: "center", justifyContent: "center" }}
+        style={{ display: "flex", gap: 24, alignItems: "center", justifyContent: "center" }}
       >
         <a href="#waitlist" style={{
           background: "var(--text)",
@@ -73,7 +69,7 @@ export default function Hero() {
         </a>
         <Link href="/science" style={{
           background: "none",
-          color: "var(--muted)",
+          color: "var(--text)",
           border: "none",
           fontSize: 13,
           cursor: "pointer",
@@ -81,6 +77,8 @@ export default function Hero() {
           textDecoration: "none",
           padding: "14px 0",
           fontFamily: "'DM Sans', sans-serif",
+          borderBottom: "1px solid rgba(240, 237, 232, 0.4)",
+          textShadow: "0 0 20px rgba(240, 237, 232, 0.6)",
         }}>
           See the science →
         </Link>
