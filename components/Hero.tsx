@@ -35,8 +35,8 @@ export default function Hero() {
           marginBottom: 28,
         }}
       >
-        Elite gear.<br />
-        <em style={{ fontStyle: "italic", color: "var(--muted)" }}>Sanitized.</em>
+        Clean gear.<br />
+        <em style={{ fontStyle: "italic", color: "var(--muted)" }}>Peak performance.</em>
       </motion.h1>
       <motion.p
         initial={{ opacity: 0, y: 20 }}
