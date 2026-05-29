@@ -1,25 +1,40 @@
 "use client";
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
-import { useRef } from "react";
+import { useState, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 
 interface WaitlistProps {
   heading?: string;
   subheading?: string;
 }
 
-export default function Waitlist({ heading = "Be first.", subheading = "We're building for the next generation of athletes and teams. Join the waitlist for founding member pricing and priority access to Athlight S1." }: WaitlistProps) {
+export default function Waitlist({
+  heading = "Be first.",
+  subheading = "We're building for the next generation of athletes and teams. Join the waitlist for founding member pricing and priority access to Athlight S1.",
+}: WaitlistProps) {
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
-  const submit = () => {
-    if (email && email.includes("@")) {
-      setStatus("success");
-      setEmail("");
-    } else {
+  const submit = async () => {
+    if (!email || !email.includes("@")) {
+      setStatus("error");
+      return;
+    }
+    setStatus("loading");
+    try {
+      const res = await fetch("/api/waitlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      if (res.ok) {
+        setStatus("success");
+        setEmail("");
+      } else {
+        setStatus("error");
+      }
+    } catch {
       setStatus("error");
     }
   };
@@ -57,6 +72,7 @@ export default function Waitlist({ heading = "Be first.", subheading = "We're bu
             onChange={(e) => setEmail(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && submit()}
             placeholder="your@email.com"
+            disabled={status === "loading" || status === "success"}
             style={{
               flex: 1,
               border: "1px solid #222",
@@ -67,25 +83,28 @@ export default function Waitlist({ heading = "Be first.", subheading = "We're bu
               color: "var(--text)",
               fontFamily: "'DM Sans', sans-serif",
               outline: "none",
+              opacity: status === "success" ? 0.5 : 1,
             }}
           />
           <button
             onClick={submit}
+            disabled={status === "loading" || status === "success"}
             style={{
-              background: "var(--text)",
-              color: "var(--bg)",
+              background: status === "success" ? "#00e5cc" : "var(--text)",
+              color: "#0a0a0a",
               border: "none",
               padding: "13px 26px",
               borderRadius: 100,
               fontSize: 13,
               fontWeight: 500,
               letterSpacing: "0.04em",
-              cursor: "pointer",
+              cursor: status === "loading" ? "wait" : "pointer",
               whiteSpace: "nowrap",
               fontFamily: "'DM Sans', sans-serif",
+              transition: "background 0.3s",
             }}
           >
-            Reserve spot
+            {status === "loading" ? "Saving..." : status === "success" ? "You're in ✓" : "Reserve spot"}
           </button>
         </div>
         <p style={{
@@ -96,7 +115,7 @@ export default function Waitlist({ heading = "Be first.", subheading = "We're bu
           opacity: status === "idle" ? 0 : 1,
           transition: "opacity 0.3s",
         }}>
-          {status === "success" ? "You're on the list — we'll be in touch." : status === "error" ? "Please enter a valid email." : ""}
+          {status === "success" ? "You're on the list — we'll be in touch soon." : status === "error" ? "Please enter a valid email." : ""}
         </p>
       </motion.div>
     </section>
