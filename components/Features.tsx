@@ -48,7 +48,7 @@ export default function Features() {
             paddingLeft: i > 0 ? 48 : 0,
           }}
         >
-          <div style={{ fontFamily: "'Instrument Serif', serif", fontSize: 42, fontWeight: 400, color: "var(--text)", lineHeight: 1, marginBottom: 4 }}>
+          <div style={{ fontFamily: "'Instrument Serif', serif", fontSize: 42, fontWeight: 400, color: "#00e5cc", lineHeight: 1, marginBottom: 4 }}>
             {f.num}<span style={{ fontSize: 18, color: "var(--dim)", fontFamily: "'DM Sans', sans-serif", fontWeight: 300 }}>{f.unit}</span>
           </div>
           <div style={{ fontSize: 13, color: "var(--dim)", letterSpacing: "0.04em", marginBottom: 20, marginTop: 2 }}>{f.label}</div>
