@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -59,30 +58,27 @@ export default function Hero() {
 
     images[0].onload = render;
 
-    // ONE single tween for ALL 181 frames so speed is perfectly even.
-    // Original feel: 100px scroll per frame at 30fps. At 60fps we have 2x
-    // frames over the same video duration, so use 50px per frame to keep
-    // the total scroll distance (and perceived scroll speed) identical.
-    // 50 * 181 ≈ 9050px  (was 100 * 91 = 9100px)
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top top",
-        end: "+=9050", // 50px of scroll per frame = perfectly even
-        scrub: true,
-        pin: true,
-      },
-    });
-
     // Text reveal trigger frame scaled from 70/91 → ~139/181
     const TEXT_REVEAL_FRAME = 139;
     const TEXT_REVEAL_DURATION_FRAMES = 6; // scaled from 3 frames at 30fps
 
-    // Single tween: all 181 frames at constant speed
+    // 1) Pinned timeline — FRAMES ONLY.
+    //    Pin releases the instant the last frame lands → no lingering.
+    //    3620px / 181 frames ≈ 20px per frame (~5 frames per scroll tick).
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top top",
+        end: "+=3620",
+        scrub: 4,
+        pin: true,
+      },
+    });
+
     tl.to(state, {
       frame: frameCount - 1,
       duration: 10,
-      snap: "frame",
+      //snap: "frame",
       ease: "none",
       onUpdate: function () {
         render();
@@ -105,17 +101,29 @@ export default function Hero() {
       },
     });
 
-    // After all frames done: lower content slides up
-    tl.fromTo(
+    // 2) Lower content slide-up — separate, NON-scrubbed trigger.
+    //    Fires the moment the pin releases, so it doesn't consume
+    //    any scroll distance and the last frame never "holds".
+    const lowerTween = gsap.fromTo(
       lowerContentRef.current,
       { y: "100vh" },
-      { y: 0, duration: 3, ease: "power3.out" }
+      {
+        y: 0,
+        duration: 1.1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "bottom bottom",
+          toggleActions: "play none none reverse",
+        },
+      }
     );
 
     window.addEventListener("resize", render);
 
     return () => {
       window.removeEventListener("resize", render);
+      lowerTween.scrollTrigger?.kill();
       ScrollTrigger.getAll().forEach((t) => t.kill());
     };
   }, []);
