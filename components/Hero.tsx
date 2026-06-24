@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -14,11 +15,11 @@ export default function Hero() {
   const lowerContentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const frameCount = 91;
+    const frameCount = 181; // 60fps sequence
     const images: HTMLImageElement[] = [];
 
     const currentFrame = (index: number) =>
-      `/Athlight01Webp/AthlightImage.11.${index + 1}.webp`;
+      `/Athlight02Webp/AthlightImage.13.${index + 1}.webp`;
 
     for (let i = 0; i < frameCount; i++) {
       const img = new Image();
@@ -58,20 +59,26 @@ export default function Hero() {
 
     images[0].onload = render;
 
-    // Key insight: use ONE single tween for ALL 91 frames so speed is
-    // perfectly even throughout. Then use onUpdate to trigger side effects
-    // (show text) based on which frame we're on.
+    // ONE single tween for ALL 181 frames so speed is perfectly even.
+    // Original feel: 100px scroll per frame at 30fps. At 60fps we have 2x
+    // frames over the same video duration, so use 50px per frame to keep
+    // the total scroll distance (and perceived scroll speed) identical.
+    // 50 * 181 ≈ 9050px  (was 100 * 91 = 9100px)
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: sectionRef.current,
         start: "top top",
-        end: "+=9100",   // 100px of scroll per frame = perfectly even
+        end: "+=9050", // 50px of scroll per frame = perfectly even
         scrub: true,
         pin: true,
       },
     });
 
-    // Single tween: all 91 frames at constant speed
+    // Text reveal trigger frame scaled from 70/91 → ~139/181
+    const TEXT_REVEAL_FRAME = 139;
+    const TEXT_REVEAL_DURATION_FRAMES = 6; // scaled from 3 frames at 30fps
+
+    // Single tween: all 181 frames at constant speed
     tl.to(state, {
       frame: frameCount - 1,
       duration: 10,
@@ -84,8 +91,11 @@ export default function Hero() {
         const hero = heroContentRef.current;
         if (!hero) return;
 
-        if (f >= 70) {
-          const enterProgress = Math.min(1, (f - 70) / 3); // fades in over 3 frames
+        if (f >= TEXT_REVEAL_FRAME) {
+          const enterProgress = Math.min(
+            1,
+            (f - TEXT_REVEAL_FRAME) / TEXT_REVEAL_DURATION_FRAMES
+          );
           hero.style.opacity = String(enterProgress);
           hero.style.transform = `translateY(${(1 - enterProgress) * 60}px)`;
         } else {
@@ -194,7 +204,14 @@ export default function Hero() {
           residue, no compromise.
         </p>
 
-        <div style={{ display: "flex", gap: 24, alignItems: "center", justifyContent: "center" }}>
+        <div
+          style={{
+            display: "flex",
+            gap: 24,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <a
             href="#waitlist"
             style={{
@@ -261,7 +278,8 @@ export default function Hero() {
               key={i}
               style={{
                 padding: "80px 60px",
-                borderRight: i < 2 ? "1px solid rgba(255,255,255,0.08)" : "none",
+                borderRight:
+                  i < 2 ? "1px solid rgba(255,255,255,0.08)" : "none",
                 display: "flex",
                 flexDirection: "column",
                 gap: 12,
