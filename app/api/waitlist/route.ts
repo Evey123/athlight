@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
           <div style="font-family: sans-serif; padding: 32px; background: #0a0a0a; color: #f0ede8; border-radius: 8px;">
             <h2 style="margin: 0 0 16px; font-size: 20px;">New Waitlist Signup 🎉</h2>
             <p style="margin: 0; color: #888; font-size: 15px;">Someone just joined the Athlight waitlist:</p>
-            <p style="margin: 16px 0; font-size: 18px; color: #00e5cc; font-weight: 600;">${email}</p>
+            <p style="margin: 16px 0; font-size: 18px; color: #a855f7; font-weight: 600;">${email}</p>
             <p style="margin: 0; color: #555; font-size: 13px;">— Athlight</p>
           </div>
         `,

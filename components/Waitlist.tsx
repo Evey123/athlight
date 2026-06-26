@@ -90,7 +90,7 @@ export default function Waitlist({
             onClick={submit}
             disabled={status === "loading" || status === "success"}
             style={{
-              background: status === "success" ? "#00e5cc" : "var(--text)",
+              background: status === "success" ? "#a855f7" : "var(--text)",
               color: "#0a0a0a",
               border: "none",
               padding: "13px 26px",
