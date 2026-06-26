@@ -44,19 +44,21 @@ export default function Nav() {
         }}>
           Science
         </Link>
-        <Link href="/#waitlist" style={{
-          fontSize: 13,
-          color: "var(--text)",
-          background: "none",
-          border: "1px solid var(--faint)",
-          padding: "9px 22px",
-          borderRadius: 100,
-          textDecoration: "none",
-          letterSpacing: "0.04em",
-          transition: "border-color 0.2s",
-        }}>
-          Join waitlist
-        </Link>
+        {pathname !== "/science" && (
+          <Link href="/#waitlist" style={{
+            fontSize: 13,
+            color: "var(--text)",
+            background: "none",
+            border: "1px solid var(--faint)",
+            padding: "9px 22px",
+            borderRadius: 100,
+            textDecoration: "none",
+            letterSpacing: "0.04em",
+            transition: "border-color 0.2s",
+          }}>
+            Join waitlist
+          </Link>
+        )}
       </div>
     </nav>
   );
