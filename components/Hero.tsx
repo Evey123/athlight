@@ -301,7 +301,7 @@ export default function Hero() {
                   fontSize: 11,
                   letterSpacing: "0.12em",
                   textTransform: "uppercase",
-                  color: "rgba(255,255,255,0.4)",
+                  color: "rgba(255,255,255,0.62)",
                 }}
               >
                 {label}
@@ -322,7 +322,7 @@ export default function Hero() {
               fontSize: 11,
               letterSpacing: "0.18em",
               textTransform: "uppercase",
-              color: "rgba(255,255,255,0.35)",
+              color: "rgba(255,255,255,0.58)",
               marginBottom: 32,
             }}
           >
@@ -343,7 +343,7 @@ export default function Hero() {
           <p
             style={{
               fontSize: 15,
-              color: "rgba(255,255,255,0.5)",
+              color: "rgba(255,255,255,0.72)",
               lineHeight: 1.8,
             }}
           >
@@ -365,7 +365,7 @@ export default function Hero() {
               fontSize: 11,
               letterSpacing: "0.18em",
               textTransform: "uppercase",
-              color: "rgba(255,255,255,0.35)",
+              color: "rgba(255,255,255,0.58)",
               marginBottom: 32,
             }}
           >
@@ -386,7 +386,7 @@ export default function Hero() {
           <p
             style={{
               fontSize: 15,
-              color: "rgba(255,255,255,0.5)",
+              color: "rgba(255,255,255,0.72)",
               lineHeight: 1.8,
               marginBottom: 40,
             }}
@@ -402,7 +402,7 @@ export default function Hero() {
               fontSize: 14,
               letterSpacing: "0.05em",
               textDecoration: "none",
-              borderBottom: "1px solid rgba(255,255,255,0.3)",
+              borderBottom: "1px solid rgba(255,255,255,0.52)",
               paddingBottom: 4,
               fontFamily: "'DM Sans', sans-serif",
             }}
@@ -427,7 +427,7 @@ export default function Hero() {
               fontSize: 11,
               letterSpacing: "0.18em",
               textTransform: "uppercase",
-              color: "rgba(255,255,255,0.35)",
+              color: "rgba(255,255,255,0.58)",
               marginBottom: 32,
             }}
           >
@@ -448,7 +448,7 @@ export default function Hero() {
           <p
             style={{
               fontSize: 15,
-              color: "rgba(255,255,255,0.5)",
+              color: "rgba(255,255,255,0.72)",
               lineHeight: 1.75,
               maxWidth: 420,
               marginBottom: 48,
@@ -515,7 +515,7 @@ export default function Hero() {
           >
             Athlight
           </span>
-          <span style={{ fontSize: 12, color: "rgba(255,255,255,0.3)" }}>
+          <span style={{ fontSize: 12, color: "rgba(255,255,255,0.52)" }}>
             © {new Date().getFullYear()} Athlight. All rights reserved.
           </span>
         </div>

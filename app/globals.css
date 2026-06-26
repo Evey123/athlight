@@ -7,9 +7,9 @@
   --border: #1a1a1a;
   --border-mid: #1e1e1e;
   --text: #f0ede8;
-  --muted: #555555;
-  --dim: #444444;
-  --faint: #333333;
+  --muted: #8f8f8f;
+  --dim: #757575;
+  --faint: #5e5e5e;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }

@@ -28,7 +28,7 @@ export default function ScienceHero() {
           color: "var(--text)",
           marginBottom: 24,
         }}>
-          How UV-C <em style={{ fontStyle: "italic", color: "#777" }}>actually</em><br />destroys bacteria.
+          How UV-C <em style={{ fontStyle: "italic", color: "#999" }}>actually</em><br />destroys bacteria.
         </h1>
         <p style={{ fontSize: 16, color: "var(--muted)", lineHeight: 1.75, fontWeight: 300 }}>
           UV-C germicidal light has been validated in clinical, municipal, and industrial settings for decades. Athlight engineers this proven technology specifically for the demands of athletic equipment.
