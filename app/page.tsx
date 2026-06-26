@@ -1,5 +1,4 @@
 import Hero from "@/components/Hero";
-import IntroLine from "@/components/IntroLine";
 import Features from "@/components/Features";
 import Waitlist from "@/components/Waitlist";
 import Footer from "@/components/Footer";
@@ -8,7 +7,6 @@ export default function Home() {
   return (
     <main>
       <Hero />
-      <IntroLine />
       <Features />
       <div style={{ height: 1, background: "var(--border)", margin: "0 56px" }} />
       <Waitlist />
