@@ -12,11 +12,13 @@ export default function Home() {
       <p
         style={{
           fontSize: 16,
-          color: "var(--muted)",
+          color: "#fff",
           lineHeight: 1.75,
           maxWidth: 480,
           fontWeight: 300,
           padding: "96px 56px 0",
+          margin: "0 auto",
+          textAlign: "center",
         }}
       >
         Advanced UV-C technology engineered for athletes. Eliminate 99.9% of
