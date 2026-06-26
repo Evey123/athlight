@@ -226,7 +226,7 @@ export default function Hero() {
             gap: 16,
             alignItems: "center",
             justifyContent: "center",
-            marginTop: 44,
+            marginTop: 72,
           }}
         >
           <Link
