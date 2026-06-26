@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
+import { useIsMobile } from "@/lib/useIsMobile";
 
 const features = [
   {
@@ -24,14 +25,15 @@ const features = [
 export default function Features() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
+  const isMobile = useIsMobile();
 
   return (
     <section
       ref={ref}
       style={{
-        padding: "0 56px 96px",
+        padding: isMobile ? "0 24px 56px" : "0 56px 96px",
         display: "grid",
-        gridTemplateColumns: "repeat(3, 1fr)",
+        gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)",
         borderTop: "1px solid var(--border)",
         width: "100%",
       }}
@@ -42,11 +44,18 @@ export default function Features() {
           initial={{ opacity: 0, y: 24 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: i * 0.1 }}
-          style={{
-            padding: "48px 48px 48px 0",
-            borderRight: i < 2 ? "1px solid var(--border)" : "none",
-            paddingLeft: i > 0 ? 48 : 0,
-          }}
+          style={
+            isMobile
+              ? {
+                  padding: "36px 0",
+                  borderBottom: i < 2 ? "1px solid var(--border)" : "none",
+                }
+              : {
+                  padding: "48px 48px 48px 0",
+                  borderRight: i < 2 ? "1px solid var(--border)" : "none",
+                  paddingLeft: i > 0 ? 48 : 0,
+                }
+          }
         >
           <div style={{ fontFamily: "'Instrument Serif', serif", fontSize: 42, fontWeight: 400, color: "#a855f7", lineHeight: 1, marginBottom: 4 }}>
             {f.num}<span style={{ fontSize: 18, color: "var(--dim)", fontFamily: "'DM Sans', sans-serif", fontWeight: 300 }}>{f.unit}</span>

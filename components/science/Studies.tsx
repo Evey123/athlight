@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
+import { useIsMobile } from "@/lib/useIsMobile";
 
 const studies = [
   {
@@ -45,9 +46,10 @@ const studies = [
 export default function Studies() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+  const isMobile = useIsMobile();
 
   return (
-    <section ref={ref} style={{ padding: "72px 56px", borderBottom: "1px solid var(--border)", width: "100%" }}>
+    <section ref={ref} style={{ padding: isMobile ? "56px 24px" : "72px 56px", borderBottom: "1px solid var(--border)", width: "100%" }}>
       <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}>
         <p style={{ fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--dim)", marginBottom: 20 }}>Peer-reviewed research</p>
         <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 32, fontWeight: 400, color: "var(--text)", marginBottom: 16, lineHeight: 1.15 }}>Grounded in evidence.</h2>
@@ -58,10 +60,10 @@ export default function Studies() {
 
       <div style={{
         display: "grid",
-        gridTemplateColumns: "repeat(3, 1fr)",
+        gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)",
         gap: 1,
         background: "var(--border)",
-        marginTop: 48,
+        marginTop: isMobile ? 32 : 48,
         border: "1px solid var(--border)",
       }}>
         {studies.map((s, i) => (

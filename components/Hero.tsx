@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useIsMobile } from "@/lib/useIsMobile";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,6 +13,7 @@ export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
   const lowerContentRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const frameCount = 181;
@@ -184,7 +186,7 @@ export default function Hero() {
           justifyContent: "center",
           alignItems: "center",
           textAlign: "center",
-          padding: "0 56px",
+          padding: isMobile ? "0 24px" : "0 56px",
           opacity: 0,
           transform: "translateY(60px)",
         }}
@@ -277,18 +279,18 @@ export default function Hero() {
             <div
               key={i}
               style={{
-                padding: "40px 24px",
+                padding: isMobile ? "28px 10px" : "40px 24px",
                 borderRight:
                   i < 2 ? "1px solid rgba(255,255,255,0.08)" : "none",
                 display: "flex",
                 flexDirection: "column",
-                gap: 12,
+                gap: isMobile ? 8 : 12,
               }}
             >
               <span
                 style={{
                   fontFamily: "'Instrument Serif', serif",
-                  fontSize: "clamp(32px, 6vw, 80px)",
+                  fontSize: isMobile ? "clamp(24px, 7vw, 32px)" : "clamp(32px, 6vw, 80px)",
                   fontWeight: 400,
                   color: "#fff",
                   lineHeight: 1,
@@ -313,7 +315,7 @@ export default function Hero() {
         {/* Technology section */}
         <div
           style={{
-            padding: "80px 32px",
+            padding: isMobile ? "56px 24px" : "80px 32px",
             borderBottom: "1px solid rgba(255,255,255,0.08)",
           }}
         >
@@ -356,7 +358,7 @@ export default function Hero() {
         {/* Science section */}
         <div
           style={{
-            padding: "80px 32px",
+            padding: isMobile ? "56px 24px" : "80px 32px",
             borderBottom: "1px solid rgba(255,255,255,0.08)",
           }}
         >
@@ -415,7 +417,7 @@ export default function Hero() {
         <div
           id="waitlist"
           style={{
-            padding: "80px 32px",
+            padding: isMobile ? "56px 24px" : "80px 32px",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -496,7 +498,7 @@ export default function Hero() {
         {/* Footer */}
         <div
           style={{
-            padding: "32px",
+            padding: isMobile ? "28px 24px" : "32px",
             borderTop: "1px solid rgba(255,255,255,0.08)",
             display: "flex",
             justifyContent: "space-between",

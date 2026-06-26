@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
+import { useIsMobile } from "@/lib/useIsMobile";
 
 const items = [
   { num: "01", title: "Lid interlock sensor", desc: "A dual-contact magnetic sensor confirms the lid is fully sealed before any UV-C emission begins. Opening mid-cycle halts the lamp within 50 milliseconds." },
@@ -13,9 +14,10 @@ const items = [
 export default function Safety() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+  const isMobile = useIsMobile();
 
   return (
-    <section ref={ref} style={{ padding: "72px 56px", borderBottom: "1px solid var(--border)", width: "100%" }}>
+    <section ref={ref} style={{ padding: isMobile ? "56px 24px" : "72px 56px", borderBottom: "1px solid var(--border)", width: "100%" }}>
       <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}>
         <p style={{ fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--dim)", marginBottom: 20 }}>Safety systems</p>
         <h2 style={{ fontFamily: "'Instrument Serif', serif", fontSize: 32, fontWeight: 400, color: "var(--text)", marginBottom: 16, lineHeight: 1.15 }}>Safe by design.</h2>
@@ -33,7 +35,7 @@ export default function Safety() {
             transition={{ duration: 0.5, delay: 0.2 + i * 0.1 }}
             style={{
               display: "flex",
-              gap: 32,
+              gap: isMobile ? 18 : 32,
               alignItems: "flex-start",
               padding: "24px 0",
               borderTop: "1px solid var(--border)",

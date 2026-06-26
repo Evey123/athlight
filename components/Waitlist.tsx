@@ -1,6 +1,7 @@
 "use client";
 import { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import { useIsMobile } from "@/lib/useIsMobile";
 
 interface WaitlistProps {
   heading?: string;
@@ -15,6 +16,7 @@ export default function Waitlist({
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
+  const isMobile = useIsMobile();
 
   const submit = async () => {
     if (!email || !email.includes("@")) {
@@ -44,7 +46,7 @@ export default function Waitlist({
       id="waitlist"
       ref={ref}
       style={{
-        padding: "96px 56px 100px",
+        padding: isMobile ? "64px 24px 72px" : "96px 56px 100px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -65,7 +67,7 @@ export default function Waitlist({
         <p style={{ fontSize: 14, color: "var(--muted)", marginBottom: 36, lineHeight: 1.65, maxWidth: 420 }}>
           {subheading}
         </p>
-        <div style={{ display: "flex", gap: 10, width: "100%", maxWidth: 460 }}>
+        <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: 10, width: "100%", maxWidth: 460 }}>
           <input
             type="email"
             value={email}

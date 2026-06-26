@@ -1,10 +1,12 @@
 "use client";
 import { motion } from "framer-motion";
+import { useIsMobile } from "@/lib/useIsMobile";
 
 export default function ScienceHero() {
+  const isMobile = useIsMobile();
   return (
     <section style={{
-      padding: "96px 56px 80px",
+      padding: isMobile ? "64px 24px 56px" : "96px 56px 80px",
       borderBottom: "1px solid var(--border)",
       display: "flex",
       flexDirection: "column",
