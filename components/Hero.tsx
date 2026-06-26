@@ -14,12 +14,16 @@ export default function Hero() {
   const lowerContentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const frameCount = 181; // 60fps sequence
-    const images: HTMLImageElement[] = [];
+    const frameCount = 181;
 
+    // Pick folder based on orientation
+    const isPortrait = window.innerHeight > window.innerWidth;
     const currentFrame = (index: number) =>
-      `/Athlight02Webp/AthlightImage.13.${index + 1}.webp`;
+      isPortrait
+        ? `/AthlightPortrait/AthlightImage.17.${index + 1}.webp`
+        : `/AthlightLandscape/AthlightImage.16.${index + 1}.webp`;
 
+    const images: HTMLImageElement[] = [];
     for (let i = 0; i < frameCount; i++) {
       const img = new Image();
       img.src = currentFrame(i);
@@ -39,14 +43,19 @@ export default function Hero() {
 
       const width = window.innerWidth;
       const height = window.innerHeight;
-      canvas.width = width;
-      canvas.height = height;
-      ctx.clearRect(0, 0, width, height);
+      if (canvas.width !== width || canvas.height !== height) {
+        canvas.width = width;
+        canvas.height = height;
+      }
+      //ctx.clearRect(0, 0, width, height);
 
       const scale = Math.min(width / img.width, height / img.height);
       const drawWidth = img.width * scale;
       const drawHeight = img.height * scale;
 
+      
+      // draw current frame at 85% opacity, leaving 15% of previous = motion blur
+      ctx.globalAlpha = 0.85;
       ctx.drawImage(
         img,
         (width - drawWidth) / 2,
@@ -54,23 +63,20 @@ export default function Hero() {
         drawWidth,
         drawHeight
       );
+      ctx.globalAlpha = 1;
     }
 
     images[0].onload = render;
 
-    // Text reveal trigger frame scaled from 70/91 → ~139/181
     const TEXT_REVEAL_FRAME = 139;
-    const TEXT_REVEAL_DURATION_FRAMES = 6; // scaled from 3 frames at 30fps
+    const TEXT_REVEAL_DURATION_FRAMES = 6;
 
-    // 1) Pinned timeline — FRAMES ONLY.
-    //    Pin releases the instant the last frame lands → no lingering.
-    //    3620px / 181 frames ≈ 20px per frame (~5 frames per scroll tick).
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: sectionRef.current,
         start: "top top",
         end: "+=3620",
-        scrub: 4,
+        scrub: 5,
         pin: true,
       },
     });
@@ -78,7 +84,6 @@ export default function Hero() {
     tl.to(state, {
       frame: frameCount - 1,
       duration: 10,
-      //snap: "frame",
       ease: "none",
       onUpdate: function () {
         render();
@@ -101,9 +106,6 @@ export default function Hero() {
       },
     });
 
-    // 2) Lower content slide-up — separate, NON-scrubbed trigger.
-    //    Fires the moment the pin releases, so it doesn't consume
-    //    any scroll distance and the last frame never "holds".
     const lowerTween = gsap.fromTo(
       lowerContentRef.current,
       { y: "100vh" },
@@ -119,10 +121,29 @@ export default function Hero() {
       }
     );
 
+    // On orientation change, reload images for new mode and re-render
+    function handleOrientationChange() {
+      const nowPortrait = window.innerHeight > window.innerWidth;
+      const newFrame = (index: number) =>
+        nowPortrait
+          ? `/AthlightPortrait/AthlightImage.16.${index + 1}.webp`
+          : `/AthlightLandscape/AthlightImage.16.${index + 1}.webp`;
+
+      images.length = 0;
+      for (let i = 0; i < frameCount; i++) {
+        const img = new Image();
+        img.src = newFrame(i);
+        images.push(img);
+      }
+      images[0].onload = render;
+    }
+
     window.addEventListener("resize", render);
+    window.addEventListener("orientationchange", handleOrientationChange);
 
     return () => {
       window.removeEventListener("resize", render);
+      window.removeEventListener("orientationchange", handleOrientationChange);
       lowerTween.scrollTrigger?.kill();
       ScrollTrigger.getAll().forEach((t) => t.kill());
     };
@@ -150,7 +171,7 @@ export default function Hero() {
         }}
       />
 
-      {/* Hero content — controlled entirely by onUpdate above */}
+      {/* Hero content */}
       <div
         ref={heroContentRef}
         style={{
@@ -182,7 +203,7 @@ export default function Hero() {
         <h1
           style={{
             fontFamily: "'Instrument Serif', serif",
-            fontSize: "clamp(64px, 9vw, 110px)",
+            fontSize: "clamp(40px, 9vw, 110px)", // smaller floor for portrait
             fontWeight: 400,
             lineHeight: 1,
             letterSpacing: "-0.03em",
@@ -215,7 +236,8 @@ export default function Hero() {
         <div
           style={{
             display: "flex",
-            gap: 24,
+            flexDirection: "column", // stack buttons on portrait
+            gap: 16,
             alignItems: "center",
             justifyContent: "center",
           }}
@@ -285,7 +307,7 @@ export default function Hero() {
             <div
               key={i}
               style={{
-                padding: "80px 60px",
+                padding: "40px 24px",
                 borderRight:
                   i < 2 ? "1px solid rgba(255,255,255,0.08)" : "none",
                 display: "flex",
@@ -296,7 +318,7 @@ export default function Hero() {
               <span
                 style={{
                   fontFamily: "'Instrument Serif', serif",
-                  fontSize: "clamp(48px, 6vw, 80px)",
+                  fontSize: "clamp(32px, 6vw, 80px)",
                   fontWeight: 400,
                   color: "#fff",
                   lineHeight: 1,
@@ -306,7 +328,7 @@ export default function Hero() {
               </span>
               <span
                 style={{
-                  fontSize: 13,
+                  fontSize: 11,
                   letterSpacing: "0.12em",
                   textTransform: "uppercase",
                   color: "rgba(255,255,255,0.4)",
@@ -321,7 +343,7 @@ export default function Hero() {
         {/* Technology section */}
         <div
           style={{
-            padding: "120px 80px",
+            padding: "80px 32px",
             borderBottom: "1px solid rgba(255,255,255,0.08)",
           }}
         >
@@ -339,11 +361,10 @@ export default function Hero() {
           <h2
             style={{
               fontFamily: "'Instrument Serif', serif",
-              fontSize: "clamp(40px, 5vw, 72px)",
+              fontSize: "clamp(28px, 5vw, 72px)",
               fontWeight: 400,
               color: "#fff",
               lineHeight: 1.1,
-              maxWidth: 760,
               marginBottom: 32,
             }}
           >
@@ -351,10 +372,9 @@ export default function Hero() {
           </h2>
           <p
             style={{
-              fontSize: 16,
+              fontSize: 15,
               color: "rgba(255,255,255,0.5)",
               lineHeight: 1.8,
-              maxWidth: 600,
             }}
           >
             Our chamber delivers a precise, calibrated dose directly to every
@@ -366,7 +386,7 @@ export default function Hero() {
         {/* Science section */}
         <div
           style={{
-            padding: "120px 80px",
+            padding: "80px 32px",
             borderBottom: "1px solid rgba(255,255,255,0.08)",
           }}
         >
@@ -384,11 +404,10 @@ export default function Hero() {
           <h2
             style={{
               fontFamily: "'Instrument Serif', serif",
-              fontSize: "clamp(40px, 5vw, 72px)",
+              fontSize: "clamp(28px, 5vw, 72px)",
               fontWeight: 400,
               color: "#fff",
               lineHeight: 1.1,
-              maxWidth: 760,
               marginBottom: 32,
             }}
           >
@@ -396,10 +415,9 @@ export default function Hero() {
           </h2>
           <p
             style={{
-              fontSize: 16,
+              fontSize: 15,
               color: "rgba(255,255,255,0.5)",
               lineHeight: 1.8,
-              maxWidth: 600,
               marginBottom: 40,
             }}
           >
@@ -427,7 +445,7 @@ export default function Hero() {
         <div
           id="waitlist"
           style={{
-            padding: "120px 80px",
+            padding: "80px 32px",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -448,7 +466,7 @@ export default function Hero() {
           <h2
             style={{
               fontFamily: "'Instrument Serif', serif",
-              fontSize: "clamp(40px, 5vw, 72px)",
+              fontSize: "clamp(28px, 5vw, 72px)",
               fontWeight: 400,
               color: "#fff",
               lineHeight: 1.1,
@@ -459,7 +477,7 @@ export default function Hero() {
           </h2>
           <p
             style={{
-              fontSize: 16,
+              fontSize: 15,
               color: "rgba(255,255,255,0.5)",
               lineHeight: 1.75,
               maxWidth: 420,
@@ -469,13 +487,13 @@ export default function Hero() {
             We&apos;re opening access to a limited number of athletes. Join the
             waitlist to be notified when Athlight ships.
           </p>
-          <div style={{ display: "flex", maxWidth: 440, width: "100%" }}>
+          <div style={{ display: "flex", width: "100%", maxWidth: 400 }}>
             <input
               type="email"
               placeholder="your@email.com"
               style={{
                 flex: 1,
-                padding: "14px 20px",
+                padding: "14px 16px",
                 borderRadius: "100px 0 0 100px",
                 border: "1px solid rgba(255,255,255,0.15)",
                 background: "rgba(255,255,255,0.05)",
@@ -490,7 +508,7 @@ export default function Hero() {
                 background: "#fff",
                 color: "#000",
                 border: "none",
-                padding: "14px 28px",
+                padding: "14px 20px",
                 borderRadius: "0 100px 100px 0",
                 fontSize: 13,
                 fontWeight: 600,
@@ -508,11 +526,13 @@ export default function Hero() {
         {/* Footer */}
         <div
           style={{
-            padding: "40px 80px",
+            padding: "32px",
             borderTop: "1px solid rgba(255,255,255,0.08)",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            flexWrap: "wrap",
+            gap: 12,
           }}
         >
           <span
