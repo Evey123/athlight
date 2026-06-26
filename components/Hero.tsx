@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -12,32 +12,6 @@ export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const heroContentRef = useRef<HTMLDivElement>(null);
   const lowerContentRef = useRef<HTMLDivElement>(null);
-
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-
-  const submitWaitlist = async () => {
-    if (!email || !email.includes("@")) {
-      setStatus("error");
-      return;
-    }
-    setStatus("loading");
-    try {
-      const res = await fetch("/api/waitlist", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-      if (res.ok) {
-        setStatus("success");
-        setEmail("");
-      } else {
-        setStatus("error");
-      }
-    } catch {
-      setStatus("error");
-    }
-  };
 
   useEffect(() => {
     const frameCount = 181;
@@ -269,69 +243,6 @@ export default function Hero() {
             justifyContent: "center",
           }}
         >
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
-            <div style={{ display: "flex", width: "100%", maxWidth: 360 }}>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  if (status !== "idle") setStatus("idle");
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") submitWaitlist();
-                }}
-                placeholder="your@email.com"
-                disabled={status === "success"}
-                style={{
-                  flex: 1,
-                  padding: "14px 18px",
-                  borderRadius: "100px 0 0 100px",
-                  border: "1px solid rgba(240, 237, 232, 0.2)",
-                  borderRight: "none",
-                  background: "rgba(240, 237, 232, 0.06)",
-                  color: "var(--text)",
-                  fontSize: 13,
-                  outline: "none",
-                  fontFamily: "'DM Sans', sans-serif",
-                }}
-              />
-              <button
-                onClick={submitWaitlist}
-                disabled={status === "loading" || status === "success"}
-                style={{
-                  background: status === "success" ? "#a855f7" : "var(--text)",
-                  color: "var(--bg)",
-                  padding: "14px 24px",
-                  borderRadius: "0 100px 100px 0",
-                  border: "none",
-                  fontSize: 13,
-                  fontWeight: 500,
-                  letterSpacing: "0.05em",
-                  cursor: status === "loading" ? "default" : "pointer",
-                  whiteSpace: "nowrap",
-                  fontFamily: "'DM Sans', sans-serif",
-                }}
-              >
-                {status === "loading" ? "..." : status === "success" ? "Joined" : "Join the waitlist"}
-              </button>
-            </div>
-            <p
-              style={{
-                fontSize: 12,
-                minHeight: 16,
-                color: status === "error" ? "#a04040" : "var(--muted)",
-                fontFamily: "'DM Sans', sans-serif",
-              }}
-            >
-              {status === "success"
-                ? "You're on the list — we'll be in touch soon."
-                : status === "error"
-                ? "Please enter a valid email."
-                : ""}
-            </p>
-          </div>
-
           <Link
             href="/science"
             style={{
