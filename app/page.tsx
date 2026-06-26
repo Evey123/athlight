@@ -9,6 +9,20 @@ export default function Home() {
     <main>
       <Nav />
       <Hero />
+      <p
+        style={{
+          fontSize: 16,
+          color: "var(--muted)",
+          lineHeight: 1.75,
+          maxWidth: 480,
+          fontWeight: 300,
+          padding: "96px 56px 0",
+        }}
+      >
+        Advanced UV-C technology engineered for athletes. Eliminate 99.9% of
+        bacteria from your chinstrap in under ten minutes — no chemicals, no
+        residue, no compromise.
+      </p>
       <Features />
       <div style={{ height: 1, background: "var(--border)", margin: "0 56px" }} />
       <Waitlist />

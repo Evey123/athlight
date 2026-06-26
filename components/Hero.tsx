@@ -219,21 +219,6 @@ export default function Hero() {
           </em>
         </h1>
 
-        <p
-          style={{
-            fontSize: 16,
-            color: "var(--muted)",
-            lineHeight: 1.75,
-            maxWidth: 480,
-            fontWeight: 300,
-            marginBottom: 44,
-          }}
-        >
-          Advanced UV-C technology engineered for athletes. Eliminate 99.9% of
-          bacteria from your chinstrap in under ten minutes — no chemicals, no
-          residue, no compromise.
-        </p>
-
         <div
           style={{
             display: "flex",
@@ -241,6 +226,7 @@ export default function Hero() {
             gap: 16,
             alignItems: "center",
             justifyContent: "center",
+            marginTop: 44,
           }}
         >
           <Link
